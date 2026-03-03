@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  item-service:
+    build: ./item-service
+    ports:
+      - "8081:8081"
+    networks:
+      - micro-net
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "8082:8082"
+    networks:
+      - micro-net
+
+  payment-service:
+    build: ./payment-service
+    ports:
+      - "8083:8083"
+    networks:
+      - micro-net
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - item-service
+      - order-service
+      - payment-service
+    networks:
+      - micro-net
+
+networks:
+  micro-net:
+    driver: bridge
